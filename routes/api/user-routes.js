@@ -1,6 +1,5 @@
 const router = require('express').Router();
 
-const { get } = require('https');
 const {
     getUsers,
     getUserById,
