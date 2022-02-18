@@ -9,15 +9,15 @@ const {
     deleteThought,
     addReaction,
     deleteReaction
-} = require('../../controllers/thought-controller.js');
+} = require('../../controllers/thought-controller');
 
 router
 .route('/')
-.get(getThoughts)
+.get(getThoughts);
 
 router
-.route('/:userid')
-.post(addNewThought)
+.route('/:userId')
+.post(addNewThought);
 
 router
 .route('/:thoughtId')
