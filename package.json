@@ -19,6 +19,7 @@
   "homepage": "https://github.com/tybant0427/social-network-API#readme",
   "dependencies": {
     "express": "^4.17.2",
+    "moment": "^2.29.1",
     "mongoose": "^6.2.1"
   }
 }
