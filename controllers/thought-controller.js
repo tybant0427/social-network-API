@@ -2,7 +2,7 @@ const { User, Thought } = require('../models');
 
 
 module.exports = {
-
+//get all thoughts 
   async getThoughts(req, res) {
     try {
       const newThought = await User.find({});
@@ -12,7 +12,8 @@ module.exports = {
       res.status(400).json(err);
     }
   },
-
+  
+//get a thought by ID 
   async getThoughtById(req, res) {
     console.log(req.params)
     try {
@@ -34,9 +35,8 @@ module.exports = {
     }
   },
   
-
-          
-    addNewThought({ params, body }, res) {
+    //add a new thought to user
+  addNewThought({ params, body }, res) {
       console.log(body);
       Thought.create(body)
           .then(({ _id }) => {
@@ -45,22 +45,17 @@ module.exports = {
                   { $push: { thoughts: _id } },
                   { new: true }
               );
-          })
-          .then(dbUserData => {
+          }) .then(dbUserData => {
               if (!dbUserData) {
                   res.status(404).json({ message: 'No user found with this id!' });
                   return;
-              }
-              res.json(dbUserData);
+              }res.json(dbUserData);
           })
           .catch(err => res.json(err));
   },
 
-
-
-
-     
-         async updateThought(req, res) {
+//update a thought 
+        async updateThought(req, res) {
             try {
               const updatedThought = await Thought.findOneAndUpdate(
                 {
@@ -70,20 +65,19 @@ module.exports = {
                 { 
                   new: true, 
                 },
-              )
+              ) 
               if (!updatedThought) {
                 res.status(404).json({
                   message: 'Thought not found.',
                 });
                 return;
-              }
-              res.json(updatedThought);
+              }res.json(updatedThought);
             } catch (err) {
               console.log(err);
               res.status(500).json(err);
             }
           },
-
+        //delete a thought 
           async deleteThought(req, res) {
             try {
               const thoughtRemove = await Thought.findByIdAndDelete(req.params.thoughtId);
@@ -108,6 +102,7 @@ module.exports = {
             }
           },
 
+          //add a reaction to a thought 
           addReaction({ params, body }, res) {
             Thought.findOneAndUpdate(
                 { _id: params.thoughtId },
@@ -124,8 +119,7 @@ module.exports = {
         },
 
         
-         
-      
+      // delete reaction 
           deleteReaction({ params }, res) {
             console.log(params.thoughtId, params.reactionId);
             Thought.findOneAndUpdate(

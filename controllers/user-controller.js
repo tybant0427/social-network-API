@@ -2,6 +2,7 @@ const { User, Thought } = require('../models');
 
 module.exports = {
 
+  //get all users
 async getUsers(req, res) {
     try {
       const users = await User.find({});
@@ -12,6 +13,7 @@ async getUsers(req, res) {
     }
   },
 
+  //get user by ID 
   async getUserById(req, res) {
     try {
       const user = await User.findOne({
@@ -32,6 +34,7 @@ async getUsers(req, res) {
     }
   },
 
+//create user 
   async addNewUser(req, res) {
     try {
       const newUser = await User.create(req.body)
@@ -42,6 +45,7 @@ async getUsers(req, res) {
     }
   },
 
+  //update user
   async updateUser(req, res) {
     try {
       const updatedUser = await User.findOneAndUpdate(
@@ -65,6 +69,8 @@ async getUsers(req, res) {
       res.status(500).json(err);
     }
   },
+
+  //delete user
   async deleteUser(req, res) {
     try {
       const userRemove = await User.findByIdAndDelete(req.params.id);
@@ -81,6 +87,7 @@ async getUsers(req, res) {
     }
   },
 
+  //add friend to user friend list
   addFriend({ params }, res) {
     User.findOneAndUpdate({ _id: params.id }, { $addToSet: { friends: params.friendId } }, { runValidators: true })
         .then(dbUserData => {
@@ -93,8 +100,7 @@ async getUsers(req, res) {
         .catch(err => res.status(400).json(err));
 },
 
- 
-
+ //delete friend from user friend list 
   async deleteFriend(req, res) {
     try {
       const user = await User.findOneAndUpdate(
