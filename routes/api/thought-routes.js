@@ -11,6 +11,7 @@ const {
     deleteReaction
 } = require('../../controllers/thought-controller');
 
+
 router
 .route('/')
 .get(getThoughts);

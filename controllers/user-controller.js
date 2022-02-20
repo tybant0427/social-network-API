@@ -81,26 +81,19 @@ async getUsers(req, res) {
     }
   },
 
-  async addFriend(req, res) {
-    try {
-      const user = await User.findOneAndUpdate(
-        { 
-          _id: req.params.id,
-          friends: { $ne: req.params.friendId },
-        }, 
-        { $push : { friends: req.params.friendId }},
-        { 
-          new: true,
-          unique: true,
-        }
-      )
-      res.json({message: 'Friend added to user.'});
+  addFriend({ params }, res) {
+    User.findOneAndUpdate({ _id: params.id }, { $addToSet: { friends: params.friendId } }, { runValidators: true })
+        .then(dbUserData => {
+            if (!dbUserData) {
+                res.status(404).json({ message: 'No user found with this id!' });
+                return;
+            }
+            res.json(dbUserData);
+        })
+        .catch(err => res.status(400).json(err));
+},
 
-    } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
-    }
-  },
+ 
 
   async deleteFriend(req, res) {
     try {
@@ -113,7 +106,7 @@ async getUsers(req, res) {
           new: true,
         }
       )
-      res.json({message: 'Friend deletd from user.'});
+      res.json({message: 'Friend deleted'});
 
     } catch (err) {
       console.log(err);

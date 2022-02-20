@@ -40,7 +40,7 @@ const userSchema = new Schema(
     }
   );
   
-  userSchema.virtual('commentCount').get(function () {
+  userSchema.virtual('friendCount').get(function () {
     return this.friends.length;
   });
   
